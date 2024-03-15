@@ -15,7 +15,6 @@ import Signup from './screens/Signup';
 import { CartProvider } from './components/ContextReducer';
 import MyOrder from './screens/MyOrder';
 
-
 function App() {
   return (
     <CartProvider>
@@ -27,6 +26,7 @@ function App() {
             <Route exact path="/signup" element={<Signup />} />
             <Route exact path="/myorder" element={<MyOrder />} />
           </Routes>
+        
         </div>
       </Router>
     </CartProvider> 

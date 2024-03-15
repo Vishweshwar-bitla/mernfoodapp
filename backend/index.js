@@ -8,7 +8,9 @@ global.foodData = require('./db')(function call(err, data, CatData) {
 
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const port = 5000
+const striperoutes = require('./Routes/stripe-route')
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
@@ -18,6 +20,8 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use('/api/stripe',striperoutes)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

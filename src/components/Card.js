@@ -22,6 +22,7 @@ export default function Card(props) {
   const [size, setSize] = useState("")
   const [nextweekday,setNextweekday] = useState("");
   const priceRef = useRef();
+  const [custom, setCustom] = useState("");
   const dateRef = useRef();
   // const [btnEnable, setBtnEnable] = useState(false);
   // let totval = 0
@@ -65,14 +66,14 @@ export default function Card(props) {
         return
       }
       else if (food.size !== size) {
-        await dispatch({ type: "ADD", id: foodItem._id, name: foodItem.name, price: finalPrice, qty: qty, size: size, img: props.ImgSrc , nextweekday:nextweekday})
+        await dispatch({ type: "ADD", id: foodItem._id, name: foodItem.name, price: finalPrice, qty: qty, size: size, img: props.ImgSrc , nextweekday:nextweekday , custom:custom})
         console.log("Size different so simply ADD one more to the list")
         return
       }
       return
     }
 
-    await dispatch({ type: "ADD", id: foodItem._id, name: foodItem.name, price: finalPrice, qty: qty, size: size ,nextweekday:nextweekday})
+    await dispatch({ type: "ADD", id: foodItem._id, name: foodItem.name, price: finalPrice, qty: qty, size: size ,nextweekday:nextweekday , custom:custom})
 
 
     // setBtnEnable(true)
@@ -94,7 +95,7 @@ export default function Card(props) {
   return (
     <div>
 
-      <div className="card mt-3" style={{ width: "16rem", maxHeight: "360px" }}>
+      <div className="card mt-3" style={{ width: "16rem", maxHeight: "450px" }}>
         <img src={props.ImgSrc} className="card-img-top" alt="..." style={{ height: "120px", objectFit: "fill" }} />
         <div className="card-body">
           <h5 className="card-title">{props.foodName}</h5>
@@ -115,6 +116,9 @@ export default function Card(props) {
               ₹{finalPrice}/-
             </div>
           </div>
+          <hr></hr>
+            <input className="form-control " placeholder="custom"  value={custom} onChange={(e) => { setCustom(e.target.value) }} />
+
           <hr></hr>
           <select className="m-2 h-100 w-20 bg-success text-black rounded" style={{ select: "#FF0000" }} ref={dateRef} onClick={handleClick} onChange={handlenext7days}>
             {nextWeekDates.map((i) => {

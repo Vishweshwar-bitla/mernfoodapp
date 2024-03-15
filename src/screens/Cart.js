@@ -1,9 +1,29 @@
 import React from 'react'
+
+
 import Delete from '@material-ui/icons/Delete'
 import { useCart, useDispatchCart } from '../components/ContextReducer';
+import App from '../App';
+import axios from 'axios';
+import Stripe from "react-stripe-checkout";
 export default function Cart() {
   let data = useCart();
   let dispatch = useDispatchCart();
+
+  const handleToken = (totalAmount, token) => {
+    try {
+      axios.post("http://localhost/api/stripe/pay", {
+        token: token.id,
+        amount: totalAmount
+      });
+    } catch (error) {
+      console.log(error);
+    };
+  }
+
+  const tokenHandler = (token) => {
+    handleToken(100, token);
+  }
   if (data.length === 0) {
     return (
       <div>
@@ -53,6 +73,7 @@ export default function Cart() {
               <th scope='col' >Option</th>
               <th scope='col' >Amount</th>
               <th scope='col' >Date</th>
+              <th scope='col' >Custom</th>
 
               <th scope='col' ></th>
             </tr>
@@ -66,6 +87,7 @@ export default function Cart() {
                 <td>{food.size}</td>
                 <td>{food.price}</td>
                 <td>{food.nextweekday}</td>
+                <td>{food.custom?food.custom:"no custom"}</td>
 
                 <td ><button type="button" className="btn p-0"><Delete onClick={() => { dispatch({ type: "REMOVE", index: index }) }} /></button> </td></tr>
             ))}
@@ -75,10 +97,17 @@ export default function Cart() {
         <div>
           <button className='btn bg-success mt-5 ' onClick={handleCheckOut} > Check Out </button>
         </div>
+        <div>
+          <Stripe
+            stripeKey="pk_test_51OsRynSBbgvHZD8X62iwjoAVTHsOsZ4Tr7kbmvVyRdL5qHFq5jQ8OJSn9NuTr6B23ypPKNtgAe5usR8dR35cAs1x00aBPexUMW"
+            token={tokenHandler}
+          />
+        </div>
       </div>
 
 
 
     </div>
-  )
+  );
 }
+

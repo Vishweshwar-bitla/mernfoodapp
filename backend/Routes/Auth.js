@@ -69,7 +69,8 @@ router.post('/login', [
             return res.status(400).json({ success, error: "Try Logging in with correct credentials" });
         }
 
-        const pwdCompare = await bcrypt.compare(password, user.password); // this return true false.
+        // const pwdCompare = await bcrypt.compare(password, user.password); // this return true false.
+        const pwdCompare = password===user.password; // this return true false.
         if (!pwdCompare) {
             return res.status(400).json({ success, error: "Try Logging in with correct credentials" });
         }

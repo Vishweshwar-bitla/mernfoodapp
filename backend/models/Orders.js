@@ -11,8 +11,8 @@ const OrderSchema = new Schema({
     order_data: {
         type: Array,
         required: true,
-    },
 
+    },
 });
 
 module.exports = mongoose.model('order', OrderSchema)
