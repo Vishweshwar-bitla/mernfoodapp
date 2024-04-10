@@ -12,11 +12,7 @@ const cors = require('cors')
 const port = 5000
 const striperoutes = require('./Routes/stripe-route')
 
-app.use(cors({
-  origin:["https://mernfoodapp-omega.vercel.app/"],
-  methods:["POST","GET"],
-  credentials: true
-}));
+app.use(cors())
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
