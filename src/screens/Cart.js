@@ -1,7 +1,8 @@
 import React from 'react'
+import{useState} from 'react'
 
 
-import Delete from '@material-ui/icons/Delete'
+import Delete from '@mui/icons-material/Delete'
 import { useCart, useDispatchCart } from '../components/ContextReducer';
 import App from '../App';
 import axios from 'axios';
@@ -9,13 +10,16 @@ import Stripe from "react-stripe-checkout";
 export default function Cart() {
   let data = useCart();
   let dispatch = useDispatchCart();
+  let [canCheckout,setCanCheckout]=useState(false);
 
   const handleToken = (totalAmount, token) => {
     try {
       axios.post("http://localhost/api/stripe/pay", {
+
         token: token.id,
         amount: totalAmount
       });
+      setCanCheckout(true);
     } catch (error) {
       console.log(error);
     };
@@ -37,24 +41,27 @@ export default function Cart() {
   // }
 
   const handleCheckOut = async () => {
-    let userEmail = localStorage.getItem("userEmail");
-    // console.log(data,localStorage.getItem("userEmail"),new Date())
-    let response = await fetch("http://localhost:5000/api/auth/orderData", {
-      // credentials: 'include',
-      // Origin:"http://localhost:3000/login",
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        order_data: data,
-        email: userEmail,
-        order_date: new Date().toDateString()
-      })
-    });
-    console.log("JSON RESPONSE:::::", response.status)
-    if (response.status === 200) {
-      dispatch({ type: "DROP" })
+    if(canCheckout){
+
+      let userEmail = localStorage.getItem("userEmail");
+      // console.log(data,localStorage.getItem("userEmail"),new Date())
+      let response = await fetch("http://localhost:5000/api/auth/orderData", {
+        // credentials: 'include',
+        // Origin:"http://localhost:3000/login",
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order_data: data,
+          email: userEmail,
+          order_date: new Date().toDateString()
+        })
+      });
+      console.log("JSON RESPONSE:::::", response.status)
+      if (response.status === 200) {
+        dispatch({ type: "DROP" })
+      }
     }
   }
 
