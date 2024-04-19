@@ -15,7 +15,7 @@ export default function Login() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ email: credentials.email, password: credentials.password }),
-      mode: "no-cors"
+      //mode: "no-cors"
 
     });
     const json = await response.json()

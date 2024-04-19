@@ -15,7 +15,7 @@ export default function Home() {
       headers: {
         'Content-Type': 'application/json'
       },
-      mode: "no-cors"
+      //mode: "no-cors"
 
     });
     response = await response.json()
